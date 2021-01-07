@@ -29,7 +29,7 @@ Features implemented so far:
   - Docker lets you distribute the containers across a cluster
   - Each container launches processes on all available cores configured and managed by celery
   - Each process takes advantage of Cooperative multitasking principles for long-running jobs
-- The repo is checked against [known unsecure coding practices](#find-unsecure-coding-practice) on production build
+- The repo is checked against [known unsecure coding practices](#find-unsecure-coding-practices) on production build
 - The entire repo's [package vulnerability report](#find-package-vulnerability) is generated on production build
 - The repo's [deadcode (security concern)](#find-deadcode-security-concern) report is generated on production build
 - The full repo is [easily formatted consistently](#consistent-code-formatting-across-colleagues) across machines/colleagues by a command
@@ -134,7 +134,7 @@ safety check
 
 <img src="./screenshots/safety.png" width="45%">
 
-# Find unsecure coding practice
+# Find unsecure coding practices
 
 Go to `/src` and execute the following:
 
