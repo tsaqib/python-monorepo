@@ -1,0 +1,33 @@
+services:
+  worker1:
+    build:
+      context: ../
+      dockerfile: worker1/Dockerfile
+    deploy:
+      replicas: 2
+    environment:
+      - REDIS_PASSWORD=secret
+    volumes:
+      - ../worker1:/src/worker1
+      - worker1lib:/usr/local/lib # caching Python packages
+    depends_on:
+      - redis
+
+  redis:
+    image: redis
+    command: redis-server --requirepass secret
+    ports:
+      - "6379:6379"
+
+  flower:
+    image: mher/flower
+    environment:
+      - REDIS_PASSWORD=secret
+    command: ["flower", "--broker=redis://:secret@redis:6379/0", "--port=5555"]
+    ports:
+      - "5555:5555"
+    depends_on:
+      - redis
+
+volumes:
+  worker1lib: {}

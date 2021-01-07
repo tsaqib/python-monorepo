@@ -1,0 +1,24 @@
+FROM python:3.9-slim as py39slimbase
+RUN apt-get update -y && apt-get install nano htop gcc make -y
+
+FROM py39slimbase
+# dictates the number of processes (gunicorn)
+ENV WEB_CONCURRENCY 2
+
+WORKDIR /src
+COPY service1/requirements.txt requirements.txt
+RUN pip install -r requirements.txt
+COPY ./common ./common
+COPY ./service1 ./service1
+
+# Good to report code coverage so that it is logged what quality we are shipping
+RUN coverage run -m unittest discover -p "*_test.py" -s service1
+RUN coverage report
+RUN python -m vulture service1/ --ignore-decorators "@router.*"
+
+# Security checks
+RUN safety check
+RUN bandit -r service1/ common/
+RUN mypy service1
+
+ENTRYPOINT ["gunicorn", "--bind", "0.0.0.0:8001", "-k", "uvicorn.workers.UvicornWorker", "service1.main:app"]

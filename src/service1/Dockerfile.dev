@@ -1,0 +1,15 @@
+FROM python:3.9-slim as py39slimbase
+RUN apt-get update -y && apt-get install nano htop gcc make -y
+
+FROM py39slimbase
+# dictates the number of processes (gunicorn)
+ENV WEB_CONCURRENCY 2
+
+WORKDIR /src
+COPY ./common ./common
+# Not copying source since it takes time, rather a volume would be mounted
+
+COPY ./service1/requirements.txt ./service1/requirements.txt 
+RUN pip install -r /src/service1/requirements.txt
+
+ENTRYPOINT python -m uvicorn service1.main:app --host 0.0.0.0 --port 8001 --log-level trace

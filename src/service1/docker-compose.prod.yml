@@ -1,0 +1,23 @@
+services:
+  service1:
+    build:
+      context: ../
+      dockerfile: service1/Dockerfile.prod
+    deploy:
+      replicas: 5
+    ports:
+      - "8001"
+    volumes:
+      - service1lib:/usr/local/lib # caching Python packages
+
+  nginx:
+    build:
+      context: ../
+      dockerfile: service1/nginx/Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - service1
+
+volumes:
+  service1lib: {}
