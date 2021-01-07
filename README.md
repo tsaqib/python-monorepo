@@ -93,7 +93,7 @@ coverage run -m unittest discover -p "*_test.py" -s service1
 coverage report
 ```
 
-<img src="./screenshots/coverage.png" width="35%">
+<img src="./screenshots/coverage.png" width="40%">
 
 # Service1: Perform statical analysis
 
@@ -112,7 +112,7 @@ radon cc -as service1/ common/
 radon mi -s service1/ common/
 ```
 
-<img src="./screenshots/cyc.png" width="30%">
+<img src="./screenshots/cyc.png" width="35%">
 
 # Find deadcode (security concern)
 
@@ -120,6 +120,8 @@ Go to `/src` and execute the following:
 
 ```bash
 vulture service1/ --ignore-decorators "@router.*"
+
+# service1/routers/fail_deadcode.py:7: unused function 'fail_it' (60% confidence)
 ```
 
 # Find package vulnerability
@@ -130,7 +132,7 @@ Go to `/src` and execute the following:
 safety check
 ```
 
-<img src="./screenshots/safety.png" width="40%">
+<img src="./screenshots/safety.png" width="45%">
 
 # Find unsecure coding practice
 
@@ -140,7 +142,7 @@ Go to `/src` and execute the following:
 bandit -r service1/ common/
 ```
 
-<img src="./screenshots/bandit.png" width="25%">
+<img src="./screenshots/bandit.png" width="30%">
 
 # Consistent code formatting across colleagues
 
