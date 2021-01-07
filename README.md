@@ -5,9 +5,9 @@ This is a sample Python monorepo solution with web/API focused projects labeled 
 Features implemented so far:
 
 - Both services and workers share code from the `src/common` module
-- Container-native concurrent solution, everything is `docker-compose up` or `down`
+- Container-native concurrent solution, [everything is `docker-compose up` or `down`](#service1-run-locally-using-docker-compose)
 - Docker images are built with lightweight and handy utilities (`nano`, `htop`, `gcc`, `make`)
-- Docker build artifacts are cached, so it won't download dependencies every time images are built
+- Docker [build artifacts are cached](#service1-production-build), so it won't download dependencies every time images are built
 - Docker volume is mounted instead of copying over the source on development mode to reduce time
 - Worker concurrency is controlled from outside via the standard `WEB_CONCURRENCY` environment variable
 - Replicas of Service1 on production build are load-balanced by nginx at 8080
@@ -15,12 +15,11 @@ Features implemented so far:
 - Service1 has swagger in-built at:
   - http://localhost:8001/docs (on dev) and
   - http://localhost:8080/docs (on production)
-- Service1 has live reload enabled (on dev), so every time you change code, the server reloads
+- Service1 has [live reload](#service1-run-locally-live-reload) enabled (on dev), so every time you change code, the server reloads
 - Service1 is [gunicorn](https://gunicorn.org/) powered but uses [Uvicorn](https://www.uvicorn.org/) workers which uses [libuv](https://github.com/libuv/libuv) (aspires to achieve Node.js-level perf)
-- Service1 is [unittest](https://docs.python.org/3/library/unittest.html)ed and code [coverage](https://github.com/nedbat/coveragepy) is measured on production build
-- Statical analysis is performed on Service1's code on production build
-- Service1's cyclomatic complexity and maintenance index are calculated by using a simple command
-- Service1 is checked against known unsecure coding practices on production build
+- Service1 is [unit tested](#service1-unit-tests) using Python's [test framework](https://docs.python.org/3/library/unittest.html) and code [coverage](https://github.com/nedbat/coveragepy) is [measured on production build](#service1-code-coverage)
+- [Statical analysis is performed](#service1-perform-statical-analysis) on Service1's code on production build
+- Service1's [cyclomatic complexity and maintenance index](#service1-calculate-cyclomatic-complexity-and-maintenance-index) are calculated by using a simple command
 - Worker1 uses [celery](https://docs.celeryproject.org/) as the worker manager backed by [redis](https://redis.io/)
 - Worker1 stores all intermediate results of a long-running workflow in redis
 - Worker1 uses the same cron format as unix's [cron](https://man7.org/linux/man-pages/man5/crontab.5.html)
@@ -30,12 +29,14 @@ Features implemented so far:
   - Docker lets you distribute the containers across a cluster
   - Each container launches processes on all available cores configured and managed by celery
   - Each process takes advantage of Cooperative multitasking principles for long-running jobs
-- The entire repo's package vulnerability report is generated on production build
-- The repo's deadcode (security concern) report is generated on production build
-- The full repo is easily formatted consistently across machines/colleagues by a command
+- The repo is checked against [known unsecure coding practices](#find-unsecure-coding-practice) on production build
+- The entire repo's [package vulnerability report](#find-package-vulnerability) is generated on production build
+- The repo's [deadcode (security concern)](#find-deadcode-security-concern) report is generated on production build
+- The full repo is [easily formatted consistently](#consistent-code-formatting-across-colleagues) across machines/colleagues by a command
 - All projects inside the solution are conveniently namespaced
 - Modern Python 3.9 slim as the Docker base image
 - Worker1 serves a beautiful dashboard for worker monitoring and debugging powered by [Flower](https://flower.readthedocs.io/) at http://localhost:5555
+
   ![Flower](./screenshots/flower.png "Flower")
 
 # Service1: Run locally (live reload)
@@ -92,23 +93,7 @@ coverage run -m unittest discover -p "*_test.py" -s service1
 coverage report
 ```
 
-![coverage](./screenshots/coverage.png "coverage")
-
-# Service1: Consistent code formatting across colleagues
-
-Go to `/src` and execute the following:
-
-```bash
-black common/ service1/ --exclude "/(bin|lib)/"
-```
-
-# Service1: Find deadcode (security concern)
-
-Go to `/src` and execute the following:
-
-```bash
-vulture service1/ --ignore-decorators "@router.*"
-```
+<img src="./screenshots/coverage.png" width="35%">
 
 # Service1: Perform statical analysis
 
@@ -127,9 +112,17 @@ radon cc -as service1/ common/
 radon mi -s service1/ common/
 ```
 
-![cyc](./screenshots/cyc.png "cyc")
+<img src="./screenshots/cyc.png" width="30%">
 
-# Service1: Find package vulnerability
+# Find deadcode (security concern)
+
+Go to `/src` and execute the following:
+
+```bash
+vulture service1/ --ignore-decorators "@router.*"
+```
+
+# Find package vulnerability
 
 Go to `/src` and execute the following:
 
@@ -137,9 +130,9 @@ Go to `/src` and execute the following:
 safety check
 ```
 
-![safety check](./screenshots/safety.png "safety check")
+<img src="./screenshots/safety.png" width="40%">
 
-# Service1: Find unsecure coding practice
+# Find unsecure coding practice
 
 Go to `/src` and execute the following:
 
@@ -147,4 +140,12 @@ Go to `/src` and execute the following:
 bandit -r service1/ common/
 ```
 
-![bandit](./screenshots/bandit.png "bandit")
+<img src="./screenshots/bandit.png" width="25%">
+
+# Consistent code formatting across colleagues
+
+Go to `/src` and execute the following:
+
+```bash
+black common/ service1/ --exclude "/(bin|lib)/"
+```
