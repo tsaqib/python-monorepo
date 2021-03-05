@@ -1,6 +1,6 @@
 # Python Monorepo Sample Solution Template
 
-This is a sample Python [monorepo](https://en.wikipedia.org/wiki/Monorepo) solution template with web/API focused projects labeled as `serviceN` and cronjob projects as `workerN`, but these names should be replaced with the actual meaningful project names. This repo uses a lot of patterns I explained at [An organizational and architectural foundation for sustainable AI engineering](https://medium.com/@tsaqib/an-organizational-and-architectural-foundation-for-sustainable-ai-engineering-18cf03998545).
+This is a sample Python [monorepo](https://en.wikipedia.org/wiki/Monorepo) solution template with web/API focused projects labeled as `serviceN` and cronjob projects as `workerN`, but these names should be replaced with the actual meaningful project names. This repo uses a lot of patterns I explained in the article series [AI Engineering @ the Speed of Startup](https://medium.com/the-ezra-tech-blog/ai-engineering-the-speed-of-startup-f8fae5295c1a).
 
 Features implemented so far:
 
